@@ -4,7 +4,7 @@ services:
     image: postgres
     restart: unless-stopped
     ports:
-      - 5432:5432
+      - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_DB: wst
       POSTGRES_PASSWORD: real_pass_ololo
