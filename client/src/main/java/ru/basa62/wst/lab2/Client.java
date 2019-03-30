@@ -1,7 +1,7 @@
-package ru.basa62.wst.lab1;
+package ru.basa62.wst.lab2;
 
-import ru.basa62.wst.lab1.ws.client.BooksEntity;
-import ru.basa62.wst.lab1.ws.client.BooksService_Service;
+import ru.basa62.wst.lab2.ws.client.BooksEntity;
+import ru.basa62.wst.lab2.ws.client.BooksService_Service;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;

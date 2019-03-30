@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>lab1</artifactId>
+        <artifactId>lab2</artifactId>
         <groupId>ru.basa62.wst</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -48,7 +48,7 @@
                                     ${project.build.directory}/generated-sources/wsdl/BooksService.wsdl
                                 </wsdlFile>
                             </wsdlFiles>
-                            <packageName>ru.basa62.wst.lab1.ws.client</packageName>
+                            <packageName>ru.basa62.wst.lab2.ws.client</packageName>
                         </configuration>
                     </execution>
                 </executions>

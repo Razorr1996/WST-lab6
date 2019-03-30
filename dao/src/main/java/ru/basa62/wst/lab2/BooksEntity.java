@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab1;
+package ru.basa62.wst.lab2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
