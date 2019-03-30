@@ -38,24 +38,12 @@ public class Client {
             String author = checkEmpty(in.nextLine());
 
             System.out.print("Дата публикации (yyyy-MM-dd): ");
-            String publicDateStr = checkEmpty(in.nextLine());
-            XMLGregorianCalendar calendar = null;
-            if (publicDateStr != null) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                try {
-                    Date date = dateFormat.parse(publicDateStr);
-                    GregorianCalendar c = new GregorianCalendar();
-                    c.setTime(date);
-                    calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar();
-                } catch (Exception e) {
-                    System.out.println("Wrong format");
-                }
-            }
+            String publicDate = checkEmpty(in.nextLine());
 
             System.out.print("ISBN: ");
             String isbn = checkEmpty(in.nextLine());
 
-            List<BooksEntity> books2 = booksService.getBooksServicePort().filter(id, name, author, calendar, isbn);
+            List<BooksEntity> books2 = booksService.getBooksServicePort().filter(id, name, author, publicDate, isbn);
 
             for (BooksEntity book : books2) {
                 System.out.println(printBook(book));

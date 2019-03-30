@@ -10,7 +10,6 @@ import ru.basa62.wst.lab2.db.QueryBuilder;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -62,6 +61,44 @@ public class BooksDAO {
         }
 
     }
+
+    public Long create(String name, String author, Date publicDate, String isbn) throws SQLException {
+        log.debug("Create Book: {} {} {} {}", name, author, publicDate, isbn);
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            long newId;
+            try (Statement idStatement = connection.createStatement()) {
+                idStatement.execute("SELECT nextval('books_id_seq') nextval");
+                try (ResultSet rs = idStatement.getResultSet()) {
+                    rs.next();
+                    newId = rs.getLong("nextval");
+                }
+
+            }
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "INSERT into books(id, name, author, public_date, isbn)" +
+                            "VALUES (?, ?, ?, ?, ?)")) {
+                statement.setLong(1, newId);
+                statement.setString(2, name);
+                statement.setString(3, author);
+                statement.setDate(4, new java.sql.Date(publicDate.getTime()));
+                statement.setString(5, isbn);
+                int count = statement.executeUpdate();
+                if (count == 0) {
+                    throw new RuntimeException("Error!");
+                }
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+            return newId;
+        }
+    }
+
+    public BooksEntity getById(Long id) throws SQLException {
+        log.debug("Get Book by id: {}", id);
+        return filter(id, null, null, null, null).get(0);
+    }
+
 
     private List<BooksEntity> rsToEntities(ResultSet rs) throws SQLException {
         List<BooksEntity> result = new ArrayList<>();

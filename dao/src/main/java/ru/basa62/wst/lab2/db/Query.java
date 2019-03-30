@@ -3,10 +3,10 @@ package ru.basa62.wst.lab2.db;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
