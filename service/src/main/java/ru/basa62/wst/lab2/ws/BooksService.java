@@ -53,6 +53,21 @@ public class BooksService {
         return booksDAO.create(name, author, getDate(publicDate), isbn);
     }
 
+    @WebMethod
+    @SneakyThrows
+    public int delete(@WebParam(name = "id") long id) {
+        return booksDAO.delete(id);
+    }
+
+    @WebMethod
+    @SneakyThrows
+    public int update(@WebParam(name = "id") Long id,
+                       @WebParam(name = "name") String name,
+                       @WebParam(name = "author") String author,
+                       @WebParam(name = "publicDate") String publicDate, @WebParam(name = "isbn") String isbn) {
+        return booksDAO.update(id, name, author, getDate(publicDate), isbn);
+    }
+
     private Date getDate(String string) throws ParseException {
         if (string == null) {
             return null;

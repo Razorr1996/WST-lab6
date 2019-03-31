@@ -40,7 +40,7 @@ public class BooksDAO {
     public List<BooksEntity> filter(Long id, String name, String author, Date publicDate, String isbn) throws SQLException {
         log.debug("Filter with args: {} {} {} {} {}", id, name, author, publicDate, isbn);
         if (Stream.of(id, name, author, publicDate, isbn).allMatch(Objects::isNull)) {
-            log.debug("Args are empty");
+            log.debug("No args");
             return findAll();
         }
         Query query = new QueryBuilder()
@@ -63,7 +63,8 @@ public class BooksDAO {
     }
 
     public Long create(String name, String author, Date publicDate, String isbn) throws SQLException {
-        log.debug("Create Book: {} {} {} {}", name, author, publicDate, isbn);
+        log.debug("INSERT into books(name, author, public_date, isbn)" +
+                "VALUES ({}, {}, {}, {})", name, author, publicDate, isbn);
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             long newId;
@@ -87,10 +88,39 @@ public class BooksDAO {
                 if (count == 0) {
                     throw new RuntimeException("Error!");
                 }
+                connection.commit();
+                connection.setAutoCommit(true);
+                return newId;
             }
-            connection.commit();
+        }
+    }
+
+    public int delete(long id) throws SQLException {
+        log.debug("DELETE FROM books WHERE id = {}", id);
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            return newId;
+            try (PreparedStatement ps = connection.prepareStatement("DELETE FROM books WHERE id = ?")) {
+                ps.setLong(1, id);
+                return ps.executeUpdate();
+            }
+        }
+    }
+
+    public int update(Long id, String name, String author, Date publicDate, String isbn) throws SQLException {
+        log.debug("UPDATE books SET name = {}, author = {}, public_date = {}, isbn = {} WHERE id = {}", name, author, publicDate, isbn, id);
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(true);
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE books SET name = ?, author = ?, public_date = ?, isbn = ? WHERE id = ?")) {
+                statement.setString(1, name);
+                statement.setString(2, author);
+                statement.setDate(3, publicDate);
+                statement.setString(4, isbn);
+                statement.setLong(5, id);
+                int count = statement.executeUpdate();
+                log.debug("Updated {} rows", count);
+                return count;
+            }
         }
     }
 
