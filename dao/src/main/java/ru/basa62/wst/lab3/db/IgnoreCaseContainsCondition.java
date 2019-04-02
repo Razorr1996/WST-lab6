@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab2.db;
+package ru.basa62.wst.lab3.db;
 
 public class IgnoreCaseContainsCondition extends AbstractCondition {
     public IgnoreCaseContainsCondition(String columnName, String value) {

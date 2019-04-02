@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab2.ws;
+package ru.basa62.wst.lab3.ws;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;

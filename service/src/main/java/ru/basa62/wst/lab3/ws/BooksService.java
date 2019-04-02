@@ -1,11 +1,11 @@
-package ru.basa62.wst.lab2.ws;
+package ru.basa62.wst.lab3.ws;
 
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import ru.basa62.wst.lab2.BooksDAO;
-import ru.basa62.wst.lab2.BooksEntity;
+import ru.basa62.wst.lab3.BooksDAO;
+import ru.basa62.wst.lab3.BooksEntity;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;

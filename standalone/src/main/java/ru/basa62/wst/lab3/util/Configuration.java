@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab2.util;
+package ru.basa62.wst.lab3.util;
 
 import lombok.SneakyThrows;
 
