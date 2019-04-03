@@ -7,15 +7,15 @@ import javax.xml.ws.WebFault;
 @WebFault(faultBean = "ru.basa62.wst.lab3.ws.exception.BooksServiceFault")
 public class BooksServiceException extends Exception {
     @Getter
-    private final BooksServiceFault fault;
+    private final BooksServiceFault faultInfo;
 
-    public BooksServiceException(String message, BooksServiceFault fault) {
+    public BooksServiceException(String message, BooksServiceFault faultInfo) {
         super(message);
-        this.fault = fault;
+        this.faultInfo = faultInfo;
     }
 
-    public BooksServiceException(String message, Throwable cause, BooksServiceFault fault) {
+    public BooksServiceException(String message, Throwable cause, BooksServiceFault faultInfo) {
         super(message, cause);
-        this.fault = fault;
+        this.faultInfo = faultInfo;
     }
 }
