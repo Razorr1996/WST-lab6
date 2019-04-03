@@ -3,16 +3,17 @@ package ru.basa62.wst.lab3.ws;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import ru.basa62.wst.lab3.BooksDAO;
 import ru.basa62.wst.lab3.BooksEntity;
+import ru.basa62.wst.lab3.ws.exception.BooksServiceException;
+import ru.basa62.wst.lab3.ws.exception.BooksServiceFault;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlElement;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -26,40 +27,79 @@ public class BooksService {
     private BooksDAO booksDAO;
 
     @WebMethod
-    @SneakyThrows
-    public List<BooksEntity> findAll() {
-        return booksDAO.findAll();
+    public List<BooksEntity> findAll() throws BooksServiceException {
+        try {
+            return booksDAO.findAll();
+        } catch (SQLException e) {
+            String message = "SQL error: " + e.getMessage() + "; State:" + e.getSQLState();
+            throw new BooksServiceException(message, e, new BooksServiceFault(message));
+        }
     }
 
     @WebMethod
-    @SneakyThrows
     public List<BooksEntity> filter(@WebParam(name = "id") Long id, @WebParam(name = "name") String name,
                                     @WebParam(name = "author") String author,
-                                    @WebParam(name = "publicDate") String publicDate, @WebParam(name = "isbn") String isbn) {
-        return booksDAO.filter(id, name, author, getDate(publicDate), isbn);
+                                    @WebParam(name = "publicDate") String publicDate, @WebParam(name = "isbn") String isbn) throws BooksServiceException {
+        try {
+            return booksDAO.filter(id, name, author, getDate(publicDate), isbn);
+        } catch (SQLException e) {
+            String message = "SQL error: " + e.getMessage() + "; State:" + e.getSQLState();
+            throw new BooksServiceException(message, e, new BooksServiceFault(message));
+        } catch (ParseException e) {
+            String message = "Parse error: " + e.getMessage();
+            throw new BooksServiceException(message, e, new BooksServiceFault(message));
+        }
     }
 
     @WebMethod
-    @SneakyThrows
     public Long create(@WebParam(name = "name") String name,
                        @WebParam(name = "author") String author,
-                       @WebParam(name = "publicDate") String publicDate, @WebParam(name = "isbn") String isbn) {
-        return booksDAO.create(name, author, getDate(publicDate), isbn);
+                       @WebParam(name = "publicDate") String publicDate, @WebParam(name = "isbn") String isbn) throws BooksServiceException {
+        try {
+            return booksDAO.create(name, author, getDate(publicDate), isbn);
+        } catch (SQLException e) {
+            String message = "SQL error: " + e.getMessage() + ". State: " + e.getSQLState();
+            throw new BooksServiceException(message, e, new BooksServiceFault(message));
+        } catch (ParseException e) {
+            String message = "Parse error: " + e.getMessage();
+            throw new BooksServiceException(message, e, new BooksServiceFault(message));
+        }
     }
 
     @WebMethod
-    @SneakyThrows
-    public int delete(@WebParam(name = "id") long id) {
-        return booksDAO.delete(id);
+    public int delete(@WebParam(name = "id") long id) throws BooksServiceException {
+        try {
+            int count = booksDAO.delete(id);
+            if (count == 0) {
+                String message = "Book with id=" + id + " doesn't exist.";
+                throw new BooksServiceException(message, new BooksServiceFault(message));
+            }
+            return count;
+        } catch (SQLException e) {
+            String message = "SQL error: " + e.getMessage() + ". State: " + e.getSQLState();
+            throw new BooksServiceException(message, e, new BooksServiceFault(message));
+        }
     }
 
     @WebMethod
-    @SneakyThrows
     public int update(@WebParam(name = "id") Long id,
-                       @WebParam(name = "name") String name,
-                       @WebParam(name = "author") String author,
-                       @WebParam(name = "publicDate") String publicDate, @WebParam(name = "isbn") String isbn) {
-        return booksDAO.update(id, name, author, getDate(publicDate), isbn);
+                      @WebParam(name = "name") String name,
+                      @WebParam(name = "author") String author,
+                      @WebParam(name = "publicDate") String publicDate, @WebParam(name = "isbn") String isbn) throws BooksServiceException {
+        try {
+            int count = booksDAO.update(id, name, author, getDate(publicDate), isbn);
+            if (count == 0) {
+                String message = "Book with id=" + id + " doesn't exist.";
+                throw new BooksServiceException(message, new BooksServiceFault(message));
+            }
+            return count;
+        } catch (SQLException e) {
+            String message = "SQL error: " + e.getMessage() + ". State: " + e.getSQLState();
+            throw new BooksServiceException(message, e, new BooksServiceFault(message));
+        } catch (ParseException e) {
+            String message = "Parse error: " + e.getMessage();
+            throw new BooksServiceException(message, e, new BooksServiceFault(message));
+        }
     }
 
     private Date getDate(String string) throws ParseException {
