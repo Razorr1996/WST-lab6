@@ -1,6 +1,7 @@
 package ru.basa62.wst.lab3;
 
 import ru.basa62.wst.lab3.ws.client.BooksEntity;
+import ru.basa62.wst.lab3.ws.client.BooksServiceException;
 import ru.basa62.wst.lab3.ws.client.BooksService_Service;
 
 import java.io.IOException;
@@ -61,9 +62,13 @@ public class Client {
 
     private static void findAll() {
         System.out.println("Выведем все книги:");
-        List<BooksEntity> books1 = booksService.getBooksServicePort().findAll();
-        for (BooksEntity book : books1) {
-            System.out.println(printBook(book));
+        try {
+            List<BooksEntity> books1 = booksService.getBooksServicePort().findAll();
+            for (BooksEntity book : books1) {
+                System.out.println(printBook(book));
+            }
+        } catch (BooksServiceException e) {
+            System.out.println(e.getFaultInfo().getMessage());
         }
     }
 
@@ -88,19 +93,23 @@ public class Client {
         System.out.print("ISBN: ");
         String isbn = checkEmpty(in.nextLine());
 
-        List<BooksEntity> books2 = booksService.getBooksServicePort().filter(id, name, author, publicDate, isbn);
+        try {
+            List<BooksEntity> books2 = booksService.getBooksServicePort().filter(id, name, author, publicDate, isbn);
 
-        if (books2.size() == 0) {
-            System.out.println("Ничего не найдено");
-        } else {
-            System.out.println("Найдено:");
-            for (BooksEntity book : books2) {
-                System.out.println(printBook(book));
+            if (books2.size() == 0) {
+                System.out.println("Ничего не найдено");
+            } else {
+                System.out.println("Найдено:");
+                for (BooksEntity book : books2) {
+                    System.out.println(printBook(book));
+                }
             }
+        } catch (BooksServiceException e) {
+            System.out.println(e.getFaultInfo().getMessage());
         }
     }
 
-    private static void create(){
+    private static void create() {
         Scanner in = new Scanner(System.in);
         System.out.println("Создадим книгу:");
 
@@ -116,11 +125,15 @@ public class Client {
         System.out.print("ISBN: ");
         String isbn = checkEmpty(in.nextLine());
 
-        Long newId = booksService.getBooksServicePort().create(name, author, publicDate, isbn);
-        System.out.printf("Новый ID: %d", newId);
+        try {
+            Long newId = booksService.getBooksServicePort().create(name, author, publicDate, isbn);
+            System.out.printf("Новый ID: %d", newId);
+        } catch (BooksServiceException e) {
+            System.out.println(e.getFaultInfo().getMessage());
+        }
     }
 
-    private static void update(){
+    private static void update() {
         Scanner in = new Scanner(System.in);
         System.out.println("Обновим книгу:");
         System.out.print("ID: ");
@@ -143,8 +156,12 @@ public class Client {
         System.out.print("ISBN: ");
         String isbn = checkEmpty(in.nextLine());
 
-        int count = booksService.getBooksServicePort().update(id, name, author, publicDate, isbn);
-        System.out.printf("Обновлено: %d", count);
+        try {
+            int count = booksService.getBooksServicePort().update(id, name, author, publicDate, isbn);
+            System.out.printf("Обновлено: %d", count);
+        } catch (BooksServiceException e) {
+            System.out.println(e.getFaultInfo().getMessage());
+        }
     }
 
     private static void delete() {
@@ -154,19 +171,23 @@ public class Client {
         String idStr = checkEmpty(in.nextLine());
         if (idStr != null) {
             long id = Long.parseLong(idStr);
-            int count = booksService.getBooksServicePort().delete(id);
-            System.out.printf("Удалено: %d", count);
+            try {
+                int count = booksService.getBooksServicePort().delete(id);
+                System.out.printf("Удалено: %d", count);
+            } catch (BooksServiceException e) {
+                System.out.println(e.getFaultInfo().getMessage());
+            }
         } else {
             System.out.println("Ничего не введено");
         }
     }
 
-    public static String printBook(BooksEntity b) {
+    private static String printBook(BooksEntity b) {
         Formatter fmt = new Formatter();
         return fmt.format("ID: %d, Book: %s, Author: %s, PublicDate: %s, ISBN: %s", b.getId(), b.getName(), b.getAuthor(), b.getPublicDate().toString(), b.getIsbn()).toString();
     }
 
-    public static String checkEmpty(String s) {
+    private static String checkEmpty(String s) {
         return s.length() == 0 ? null : s;
     }
 }
