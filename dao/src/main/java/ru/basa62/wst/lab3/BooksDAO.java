@@ -124,11 +124,6 @@ public class BooksDAO {
         }
     }
 
-    public BooksEntity getById(Long id) throws SQLException {
-        log.debug("Get Book by id: {}", id);
-        return filter(id, null, null, null, null).get(0);
-    }
-
 
     private List<BooksEntity> rsToEntities(ResultSet rs) throws SQLException {
         List<BooksEntity> result = new ArrayList<>();

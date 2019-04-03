@@ -41,12 +41,6 @@ public class BooksService {
 
     @WebMethod
     @SneakyThrows
-    public BooksEntity getById(@WebParam(name = "id") @XmlElement(required = true) Long id) {
-        return booksDAO.getById(id);
-    }
-
-    @WebMethod
-    @SneakyThrows
     public Long create(@WebParam(name = "name") String name,
                        @WebParam(name = "author") String author,
                        @WebParam(name = "publicDate") String publicDate, @WebParam(name = "isbn") String isbn) {
