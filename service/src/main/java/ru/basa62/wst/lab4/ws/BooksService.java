@@ -1,12 +1,12 @@
-package ru.basa62.wst.lab3.ws;
+package ru.basa62.wst.lab4.ws;
 
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import ru.basa62.wst.lab3.BooksDAO;
-import ru.basa62.wst.lab3.BooksEntity;
-import ru.basa62.wst.lab3.ws.exception.BooksServiceException;
-import ru.basa62.wst.lab3.ws.exception.BooksServiceFault;
+import ru.basa62.wst.lab4.BooksDAO;
+import ru.basa62.wst.lab4.BooksEntity;
+import ru.basa62.wst.lab4.ws.exception.BooksServiceException;
+import ru.basa62.wst.lab4.ws.exception.BooksServiceFault;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;

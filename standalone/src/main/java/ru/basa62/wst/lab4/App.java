@@ -1,12 +1,12 @@
-package ru.basa62.wst.lab3;
+package ru.basa62.wst.lab4;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import ru.basa62.wst.lab3.util.Configuration;
-import ru.basa62.wst.lab3.ws.BooksService;
-import ru.basa62.wst.lab3.ws.TestService;
+import ru.basa62.wst.lab4.util.Configuration;
+import ru.basa62.wst.lab4.ws.BooksService;
+import ru.basa62.wst.lab4.ws.TestService;
 
 import javax.sql.DataSource;
 import javax.xml.ws.Endpoint;

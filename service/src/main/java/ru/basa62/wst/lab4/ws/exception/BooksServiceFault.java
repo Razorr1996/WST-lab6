@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab3.ws.exception;
+package ru.basa62.wst.lab4.ws.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

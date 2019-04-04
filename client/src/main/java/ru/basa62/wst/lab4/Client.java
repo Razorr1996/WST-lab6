@@ -1,8 +1,8 @@
-package ru.basa62.wst.lab3;
+package ru.basa62.wst.lab4;
 
-import ru.basa62.wst.lab3.ws.client.BooksEntity;
-import ru.basa62.wst.lab3.ws.client.BooksServiceException;
-import ru.basa62.wst.lab3.ws.client.BooksService_Service;
+import ru.basa62.wst.lab4.ws.client.BooksEntity;
+import ru.basa62.wst.lab4.ws.client.BooksServiceException;
+import ru.basa62.wst.lab4.ws.client.BooksService_Service;
 
 import java.io.IOException;
 import java.net.URL;

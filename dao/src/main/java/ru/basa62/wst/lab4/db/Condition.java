@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab3.db;
+package ru.basa62.wst.lab4.db;
 
 public interface Condition {
     String build();

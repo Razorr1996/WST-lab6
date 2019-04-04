@@ -1,10 +1,10 @@
-package ru.basa62.wst.lab3.ws.exception;
+package ru.basa62.wst.lab4.ws.exception;
 
 import lombok.Getter;
 
 import javax.xml.ws.WebFault;
 
-@WebFault(faultBean = "ru.basa62.wst.lab3.ws.exception.BooksServiceFault")
+@WebFault(faultBean = "BooksServiceFault")
 public class BooksServiceException extends Exception {
     @Getter
     private final BooksServiceFault faultInfo;
