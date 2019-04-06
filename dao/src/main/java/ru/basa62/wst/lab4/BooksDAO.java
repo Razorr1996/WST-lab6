@@ -8,8 +8,13 @@ import ru.basa62.wst.lab4.db.Query;
 import ru.basa62.wst.lab4.db.QueryBuilder;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -37,7 +42,7 @@ public class BooksDAO {
 
     }
 
-    public List<BooksEntity> filter(Long id, String name, String author, Date publicDate, String isbn) throws SQLException {
+    public List<BooksEntity> filter(Long id, String name, String author, java.sql.Date publicDate, String isbn) throws SQLException {
         log.debug("Filter with args: {} {} {} {} {}", id, name, author, publicDate, isbn);
         if (Stream.of(id, name, author, publicDate, isbn).allMatch(Objects::isNull)) {
             log.debug("No args");
@@ -49,7 +54,7 @@ public class BooksDAO {
                 .condition(DefaultCondition.defaultCondition(ID_COLUMN, id, Long.class))
                 .condition(new IgnoreCaseContainsCondition(NAME_COLUMN, name))
                 .condition(new IgnoreCaseContainsCondition(AUTHOR_COLUMN, author))
-                .condition(DefaultCondition.defaultCondition(PUBLIC_DATE_COLUMN, publicDate, Date.class))
+                .condition(DefaultCondition.defaultCondition(PUBLIC_DATE_COLUMN, publicDate, java.sql.Date.class))
                 .condition(new IgnoreCaseContainsCondition(ISBN_COLUMN, isbn))
                 .buildPreparedStatementQuery();
         log.debug("Built query {}", query.getQueryString());
@@ -62,7 +67,7 @@ public class BooksDAO {
 
     }
 
-    public Long create(String name, String author, Date publicDate, String isbn) throws SQLException {
+    public Long create(String name, String author, java.sql.Date publicDate, String isbn) throws SQLException {
         log.debug("INSERT into books(name, author, public_date, isbn)" +
                 "VALUES ({}, {}, {}, {})", name, author, publicDate, isbn);
         try (Connection connection = dataSource.getConnection()) {
@@ -106,7 +111,7 @@ public class BooksDAO {
         }
     }
 
-    public int update(Long id, String name, String author, Date publicDate, String isbn) throws SQLException {
+    public int update(Long id, String name, String author, java.sql.Date publicDate, String isbn) throws SQLException {
         log.debug("UPDATE books SET name = {}, author = {}, public_date = {}, isbn = {} WHERE id = {}", name, author, publicDate, isbn, id);
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
@@ -114,7 +119,7 @@ public class BooksDAO {
                     "UPDATE books SET name = ?, author = ?, public_date = ?, isbn = ? WHERE id = ?")) {
                 statement.setString(1, name);
                 statement.setString(2, author);
-                statement.setDate(3, publicDate);
+                statement.setDate(3, new java.sql.Date(publicDate.getTime()));
                 statement.setString(4, isbn);
                 statement.setLong(5, id);
                 int count = statement.executeUpdate();
@@ -138,7 +143,7 @@ public class BooksDAO {
         long id = rs.getLong(ID_COLUMN);
         String name = rs.getString(NAME_COLUMN);
         String author = rs.getString(AUTHOR_COLUMN);
-        Date publicDate = rs.getDate(PUBLIC_DATE_COLUMN);
+        Date publicDate = new Date(rs.getTimestamp(PUBLIC_DATE_COLUMN).getTime());
         String isbn = rs.getString(ISBN_COLUMN);
         return new BooksEntity(id, name, author, publicDate, isbn);
     }
