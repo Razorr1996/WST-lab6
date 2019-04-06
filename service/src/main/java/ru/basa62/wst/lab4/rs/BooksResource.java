@@ -30,14 +30,7 @@ public class BooksResource {
     }
 
     @GET
-    @Path("/all")
-    @SneakyThrows
-    public List<BooksEntity> findAll() {
-        return booksDAO.findAll();
-    }
-
-    @GET
-    @Path("/filter")
+//    @Path("/filter")
     @SneakyThrows
     public List<BooksEntity> filter(@QueryParam("id") Long id, @QueryParam("name") String name,
                                     @QueryParam("author") String author,
