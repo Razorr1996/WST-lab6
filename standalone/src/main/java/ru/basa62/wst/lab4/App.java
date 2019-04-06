@@ -1,39 +1,44 @@
 package ru.basa62.wst.lab4;
 
+import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
+import com.sun.jersey.api.core.ClassNamesResourceConfig;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.glassfish.grizzly.http.server.HttpServer;
+import ru.basa62.wst.lab4.rs.BooksResource;
 import ru.basa62.wst.lab4.util.Configuration;
-import ru.basa62.wst.lab4.ws.BooksService;
-import ru.basa62.wst.lab4.ws.TestService;
 
 import javax.sql.DataSource;
-import javax.xml.ws.Endpoint;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 @Slf4j
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Configuration conf = new Configuration("config.properties");
         String scheme = conf.get("scheme", "http");
         String host = conf.get("host", "localhost");
         String port = conf.get("port", "8081");
         String baseUrl = scheme + "://" + host + ":" + port;
 
-        String booksName = conf.get("books.name", "Books");
-        String testName = conf.get("test.name", "Test");
-
-        String booksUrl = baseUrl + "/" + booksName;
-        String testUrl = baseUrl + "/" + testName;
+        String appName = conf.get("app.name", "standalone-lab4");
+        String appUrl = baseUrl + "/" + appName;
 
         DataSource dataSource = initDataSource();
+        BooksResource.STATIC_DAO = new BooksDAO(dataSource);
+
+        ClassNamesResourceConfig resourceConfig = new ClassNamesResourceConfig(BooksResource.class);
 
         log.info("Starting");
-        Endpoint.publish(testUrl, new TestService());
-        Endpoint.publish(booksUrl, new BooksService(new BooksDAO(dataSource)));
+        HttpServer httpServer = GrizzlyServerFactory.createHttpServer(appUrl, resourceConfig);
+        httpServer.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(httpServer::stop));
         log.info("All started");
+
+        System.in.read();
     }
 
     @SneakyThrows
