@@ -1,8 +1,6 @@
 package ru.basa62.wst.lab4;
 
-import ru.basa62.wst.lab4.ws.client.BooksEntity;
-import ru.basa62.wst.lab4.ws.client.BooksServiceException;
-import ru.basa62.wst.lab4.ws.client.BooksService_Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -11,22 +9,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Client {
-    static BooksService_Service booksService;
+    static BooksResourceClient booksClient;
 
     public static void main(String[] args) throws IOException {
         URL url = new URL(args[0]);
-        booksService = new BooksService_Service(url);
+        booksClient = new BooksResourceClient(url.toString());
 
         System.out.println("Добро пожаловать в библиотеку.");
         Scanner in = new Scanner(System.in);
         String choiceStr;
         while (true) {
             System.out.println("\nМеню:\n0 - Выход\n" +
-                    "1 - findAll\n" +
-                    "2 - filter\n" +
-                    "3 - create\n" +
-                    "4 - update\n" +
-                    "5 - delete\n");
+                    "1 - filter\n" +
+                    "2 - create\n" +
+                    "3 - update\n" +
+                    "4 - delete\n");
             System.out.print("Выбор: ");
             choiceStr = checkEmpty(in.nextLine());
             if (choiceStr != null) {
@@ -35,41 +32,27 @@ public class Client {
                     case 0:
                         return;
                     case 1:
-                        findAll();
-                        break;
-                    case 2:
                         filter();
                         break;
+                    case 2:
+//                        create();
+//                        break;
                     case 3:
-                        create();
-                        break;
+//                        update();
+//                        break;
                     case 4:
-                        update();
-                        break;
-                    case 5:
-                        delete();
-                        break;
+                        throw new NotImplementedException();
+//                        delete();
+//                        break;
                     default:
                         System.out.println("Неверное значение");
                         break;
                 }
             } else {
-                System.out.println("Введите число от 1 до 5");
+                System.out.println("Введите число");
             }
         }
 
-    }
-
-    private static void findAll() {
-        System.out.println("Выведем все книги:");
-        try {
-            List<BooksEntity> books1 = booksService.getBooksServicePort().findAll();
-            for (BooksEntity book : books1) {
-                System.out.println(printBook(book));
-            }
-        } catch (BooksServiceException e) {
-            System.out.println(e.getFaultInfo().getMessage());
-        }
     }
 
     private static void filter() {
@@ -93,94 +76,90 @@ public class Client {
         System.out.print("ISBN: ");
         String isbn = checkEmpty(in.nextLine());
 
-        try {
-            List<BooksEntity> books2 = booksService.getBooksServicePort().filter(id, name, author, publicDate, isbn);
+        List<BooksEntity> books2 = booksClient.filter(id, name, author, publicDate, isbn);
 
-            if (books2.size() == 0) {
-                System.out.println("Ничего не найдено");
-            } else {
-                System.out.println("Найдено:");
-                for (BooksEntity book : books2) {
-                    System.out.println(printBook(book));
-                }
-            }
-        } catch (BooksServiceException e) {
-            System.out.println(e.getFaultInfo().getMessage());
-        }
-    }
-
-    private static void create() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Создадим книгу:");
-
-        System.out.print("Название: ");
-        String name = checkEmpty(in.nextLine());
-
-        System.out.print("Автор: ");
-        String author = checkEmpty(in.nextLine());
-
-        System.out.print("Дата публикации (yyyy-MM-dd): ");
-        String publicDate = checkEmpty(in.nextLine());
-
-        System.out.print("ISBN: ");
-        String isbn = checkEmpty(in.nextLine());
-
-        try {
-            Long newId = booksService.getBooksServicePort().create(name, author, publicDate, isbn);
-            System.out.printf("Новый ID: %d", newId);
-        } catch (BooksServiceException e) {
-            System.out.println(e.getFaultInfo().getMessage());
-        }
-    }
-
-    private static void update() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Обновим книгу:");
-        System.out.print("ID: ");
-
-        String idStr = checkEmpty(in.nextLine());
-        Long id = null;
-        if (idStr != null) {
-            id = Long.parseLong(idStr);
-        }
-
-        System.out.print("Название: ");
-        String name = checkEmpty(in.nextLine());
-
-        System.out.print("Автор: ");
-        String author = checkEmpty(in.nextLine());
-
-        System.out.print("Дата публикации (yyyy-MM-dd): ");
-        String publicDate = checkEmpty(in.nextLine());
-
-        System.out.print("ISBN: ");
-        String isbn = checkEmpty(in.nextLine());
-
-        try {
-            int count = booksService.getBooksServicePort().update(id, name, author, publicDate, isbn);
-            System.out.printf("Обновлено: %d", count);
-        } catch (BooksServiceException e) {
-            System.out.println(e.getFaultInfo().getMessage());
-        }
-    }
-
-    private static void delete() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Удалим книгу:");
-        System.out.print("ID: ");
-        String idStr = checkEmpty(in.nextLine());
-        if (idStr != null) {
-            long id = Long.parseLong(idStr);
-            try {
-                int count = booksService.getBooksServicePort().delete(id);
-                System.out.printf("Удалено: %d", count);
-            } catch (BooksServiceException e) {
-                System.out.println(e.getFaultInfo().getMessage());
-            }
+        if (books2.size() == 0) {
+            System.out.println("Ничего не найдено");
         } else {
-            System.out.println("Ничего не введено");
+            System.out.println("Найдено:");
+            for (BooksEntity book : books2) {
+                System.out.println(printBook(book));
+            }
         }
     }
+
+//    private static void create() {
+//        Scanner in = new Scanner(System.in);
+//        System.out.println("Создадим книгу:");
+//
+//        System.out.print("Название: ");
+//        String name = checkEmpty(in.nextLine());
+//
+//        System.out.print("Автор: ");
+//        String author = checkEmpty(in.nextLine());
+//
+//        System.out.print("Дата публикации (yyyy-MM-dd): ");
+//        String publicDate = checkEmpty(in.nextLine());
+//
+//        System.out.print("ISBN: ");
+//        String isbn = checkEmpty(in.nextLine());
+//
+//        try {
+//            Long newId = booksService.getBooksServicePort().create(name, author, publicDate, isbn);
+//            System.out.printf("Новый ID: %d", newId);
+//        } catch (BooksServiceException e) {
+//            System.out.println(e.getFaultInfo().getMessage());
+//        }
+//    }
+//
+//    private static void update() {
+//        Scanner in = new Scanner(System.in);
+//        System.out.println("Обновим книгу:");
+//        System.out.print("ID: ");
+//
+//        String idStr = checkEmpty(in.nextLine());
+//        Long id = null;
+//        if (idStr != null) {
+//            id = Long.parseLong(idStr);
+//        }
+//
+//        System.out.print("Название: ");
+//        String name = checkEmpty(in.nextLine());
+//
+//        System.out.print("Автор: ");
+//        String author = checkEmpty(in.nextLine());
+//
+//        System.out.print("Дата публикации (yyyy-MM-dd): ");
+//        String publicDate = checkEmpty(in.nextLine());
+//
+//        System.out.print("ISBN: ");
+//        String isbn = checkEmpty(in.nextLine());
+//
+//        try {
+//            int count = booksService.getBooksServicePort().update(id, name, author, publicDate, isbn);
+//            System.out.printf("Обновлено: %d", count);
+//        } catch (BooksServiceException e) {
+//            System.out.println(e.getFaultInfo().getMessage());
+//        }
+//    }
+//
+//    private static void delete() {
+//        Scanner in = new Scanner(System.in);
+//        System.out.println("Удалим книгу:");
+//        System.out.print("ID: ");
+//        String idStr = checkEmpty(in.nextLine());
+//        if (idStr != null) {
+//            long id = Long.parseLong(idStr);
+//            try {
+//                int count = booksService.getBooksServicePort().delete(id);
+//                System.out.printf("Удалено: %d", count);
+//            } catch (BooksServiceException e) {
+//                System.out.println(e.getFaultInfo().getMessage());
+//            }
+//        } else {
+//            System.out.println("Ничего не введено");
+//        }
+//    }
 
     private static String printBook(BooksEntity b) {
         Formatter fmt = new Formatter();

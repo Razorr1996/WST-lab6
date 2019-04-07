@@ -20,7 +20,7 @@
         <module>service</module>
         <module>j2ee</module>
         <module>standalone</module>
-<!--        <module>client</module>-->
+        <module>client</module>
     </modules>
 
     <build>
