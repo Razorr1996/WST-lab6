@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab5.db;
+package ru.basa62.wst.lab6.db;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;

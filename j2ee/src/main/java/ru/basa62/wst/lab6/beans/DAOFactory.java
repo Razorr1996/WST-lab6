@@ -1,7 +1,7 @@
-package ru.basa62.wst.lab5.beans;
+package ru.basa62.wst.lab6.beans;
 
 import lombok.Data;
-import ru.basa62.wst.lab5.BooksDAO;
+import ru.basa62.wst.lab6.BooksDAO;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;

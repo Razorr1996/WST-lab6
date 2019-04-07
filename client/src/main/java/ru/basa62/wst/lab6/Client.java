@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab5;
+package ru.basa62.wst.lab6;
 
 import java.io.IOException;
 import java.net.URL;

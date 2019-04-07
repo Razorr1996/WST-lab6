@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab5;
+package ru.basa62.wst.lab6;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;

@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab5;
+package ru.basa62.wst.lab6;
 
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.ClassNamesResourceConfig;
@@ -7,8 +7,8 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.glassfish.grizzly.http.server.HttpServer;
-import ru.basa62.wst.lab5.rs.BooksResource;
-import ru.basa62.wst.lab5.util.Configuration;
+import ru.basa62.wst.lab6.rs.BooksResource;
+import ru.basa62.wst.lab6.util.Configuration;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class App {
         String port = conf.get("port", "8081");
         String baseUrl = scheme + "://" + host + ":" + port;
 
-        String appName = conf.get("app.name", "standalone-lab5");
+        String appName = conf.get("app.name", "standalone-lab6");
         String appUrl = baseUrl + "/" + appName;
 
         DataSource dataSource = initDataSource();
