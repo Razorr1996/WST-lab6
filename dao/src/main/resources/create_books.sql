@@ -1,11 +1,11 @@
 CREATE TABLE "books"
 (
-  id          bigserial              NOT NULL,
-  name        character varying(200) not null,
-  author      character varying(200),
-  public_date TIMESTAMP,
-  isbn        character varying(200),
-  CONSTRAINT "Books_pkey" PRIMARY KEY (id)
+    id          bigserial              NOT NULL,
+    name        character varying(200) not null,
+    author      character varying(200),
+    public_date TIMESTAMP,
+    isbn        character varying(200),
+    CONSTRAINT "Books_pkey" PRIMARY KEY (id)
 );
 
 insert into books(name, author, public_date, isbn)

@@ -1,6 +1,5 @@
 package ru.basa62.wst.lab6.rs;
 
-import lombok.SneakyThrows;
 import ru.basa62.wst.lab6.BooksDAO;
 import ru.basa62.wst.lab6.BooksEntity;
 import ru.basa62.wst.lab6.rs.exceptions.ServiceException;

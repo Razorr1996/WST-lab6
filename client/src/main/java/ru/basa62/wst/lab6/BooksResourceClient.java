@@ -27,7 +27,8 @@ public class BooksResourceClient {
         resource = addParam(resource, "isbn", isbn);
         ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            GenericType<String> type = new GenericType<String>() {};
+            GenericType<String> type = new GenericType<String>() {
+            };
             return Result.left(response.getEntity(type));
         }
         GenericType<List<BooksEntity>> type = new GenericType<List<BooksEntity>>() {
@@ -44,7 +45,8 @@ public class BooksResourceClient {
         resource = addParam(resource, "isbn", isbn);
         ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            GenericType<String> type = new GenericType<String>() {};
+            GenericType<String> type = new GenericType<String>() {
+            };
             return Result.left(response.getEntity(type));
         }
         GenericType<String> type = new GenericType<String>() {
@@ -62,7 +64,8 @@ public class BooksResourceClient {
         resource = addParam(resource, "isbn", isbn);
         ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            GenericType<String> type = new GenericType<String>() {};
+            GenericType<String> type = new GenericType<String>() {
+            };
             return Result.left(response.getEntity(type));
         }
         GenericType<String> type = new GenericType<String>() {
@@ -76,7 +79,8 @@ public class BooksResourceClient {
         resource = addParam(resource, "id", id);
         ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            GenericType<String> type = new GenericType<String>() {};
+            GenericType<String> type = new GenericType<String>() {
+            };
             return Result.left(response.getEntity(type));
         }
         GenericType<String> type = new GenericType<String>() {
