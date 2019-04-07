@@ -1,11 +1,11 @@
-package ru.basa62.wst.lab4;
+package ru.basa62.wst.lab5;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.basa62.wst.lab4.db.DefaultCondition;
-import ru.basa62.wst.lab4.db.IgnoreCaseContainsCondition;
-import ru.basa62.wst.lab4.db.Query;
-import ru.basa62.wst.lab4.db.QueryBuilder;
+import ru.basa62.wst.lab5.db.DefaultCondition;
+import ru.basa62.wst.lab5.db.IgnoreCaseContainsCondition;
+import ru.basa62.wst.lab5.db.Query;
+import ru.basa62.wst.lab5.db.QueryBuilder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

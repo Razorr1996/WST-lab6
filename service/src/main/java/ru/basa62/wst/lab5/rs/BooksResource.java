@@ -1,8 +1,8 @@
-package ru.basa62.wst.lab4.rs;
+package ru.basa62.wst.lab5.rs;
 
 import lombok.SneakyThrows;
-import ru.basa62.wst.lab4.BooksDAO;
-import ru.basa62.wst.lab4.BooksEntity;
+import ru.basa62.wst.lab5.BooksDAO;
+import ru.basa62.wst.lab5.BooksEntity;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

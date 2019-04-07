@@ -1,6 +1,4 @@
-package ru.basa62.wst.lab4;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+package ru.basa62.wst.lab5;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,9 +39,9 @@ public class Client {
 //                        update();
 //                        break;
                     case 4:
-                        throw new NotImplementedException();
+                        System.out.println("Ещё не реализовано");
 //                        delete();
-//                        break;
+                        break;
                     default:
                         System.out.println("Неверное значение");
                         break;

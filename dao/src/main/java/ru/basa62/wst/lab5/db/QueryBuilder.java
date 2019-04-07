@@ -1,4 +1,4 @@
-package ru.basa62.wst.lab4.db;
+package ru.basa62.wst.lab5.db;
 
 import java.util.ArrayList;
 import java.util.List;

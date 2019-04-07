@@ -8,7 +8,7 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>ru.basa62.wst.lab4.rs</param-value>
+            <param-value>ru.basa62.wst.lab5.rs</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
