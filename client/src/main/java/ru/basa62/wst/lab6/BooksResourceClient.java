@@ -17,7 +17,7 @@ public class BooksResourceClient {
     @NonNull
     private final String baseUrl;
 
-    public List<BooksEntity> filter(Long id, String name, String author, String  publicDate, String isbn) {
+    public Result<List<BooksEntity>> filter(Long id, String name, String author, String publicDate, String isbn) {
         Client client = Client.create();
         WebResource resource = client.resource(baseUrl);
         resource = addParam(resource, "id", id);
@@ -27,14 +27,15 @@ public class BooksResourceClient {
         resource = addParam(resource, "isbn", isbn);
         ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            throw new IllegalStateException("Request failed");
+            GenericType<String> type = new GenericType<String>() {};
+            return Result.left(response.getEntity(type));
         }
         GenericType<List<BooksEntity>> type = new GenericType<List<BooksEntity>>() {
         };
-        return response.getEntity(type);
+        return Result.right(response.getEntity(type));
     }
 
-    public String create(String name, String author, String  publicDate, String isbn) {
+    public Result<String> create(String name, String author, String publicDate, String isbn) {
         Client client = Client.create();
         WebResource resource = client.resource(baseUrl);
         resource = addParam(resource, "name", name);
@@ -43,14 +44,15 @@ public class BooksResourceClient {
         resource = addParam(resource, "isbn", isbn);
         ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            throw new IllegalStateException("Request failed");
+            GenericType<String> type = new GenericType<String>() {};
+            return Result.left(response.getEntity(type));
         }
         GenericType<String> type = new GenericType<String>() {
         };
-        return response.getEntity(type);
+        return Result.right(response.getEntity(type));
     }
 
-    public String update(Long id, String name, String author, String  publicDate, String isbn) {
+    public Result<String> update(Long id, String name, String author, String publicDate, String isbn) {
         Client client = Client.create();
         WebResource resource = client.resource(baseUrl);
         resource = addParam(resource, "id", id);
@@ -60,24 +62,26 @@ public class BooksResourceClient {
         resource = addParam(resource, "isbn", isbn);
         ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            throw new IllegalStateException("Request failed");
+            GenericType<String> type = new GenericType<String>() {};
+            return Result.left(response.getEntity(type));
         }
         GenericType<String> type = new GenericType<String>() {
         };
-        return response.getEntity(type);
+        return Result.right(response.getEntity(type));
     }
 
-    public String delete(Long id) {
+    public Result<String> delete(Long id) {
         Client client = Client.create();
         WebResource resource = client.resource(baseUrl);
         resource = addParam(resource, "id", id);
         ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            throw new IllegalStateException("Request failed");
+            GenericType<String> type = new GenericType<String>() {};
+            return Result.left(response.getEntity(type));
         }
         GenericType<String> type = new GenericType<String>() {
         };
-        return response.getEntity(type);
+        return Result.right(response.getEntity(type));
     }
 
     private WebResource addParam(WebResource webResource, String name, Object param) {

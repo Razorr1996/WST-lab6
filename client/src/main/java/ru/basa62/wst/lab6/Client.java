@@ -73,14 +73,20 @@ public class Client {
         System.out.print("ISBN: ");
         String isbn = checkEmpty(in.nextLine());
 
-        List<BooksEntity> books2 = booksClient.filter(id, name, author, publicDate, isbn);
+        Result<List<BooksEntity>> result = booksClient.filter(id, name, author, publicDate, isbn);
 
-        if (books2.size() == 0) {
-            System.out.println("Ничего не найдено");
+        if (result.isError()) {
+            System.out.println(result.getMessage());
         } else {
-            System.out.println("Найдено:");
-            for (BooksEntity book : books2) {
-                System.out.println(printBook(book));
+            List<BooksEntity> books2 = result.getResult();
+
+            if (books2.size() == 0) {
+                System.out.println("Ничего не найдено");
+            } else {
+                System.out.println("Найдено:");
+                for (BooksEntity book : books2) {
+                    System.out.println(printBook(book));
+                }
             }
         }
     }
@@ -101,8 +107,12 @@ public class Client {
         System.out.print("ISBN: ");
         String isbn = checkEmpty(in.nextLine());
 
-        String newId = booksClient.create(name, author, publicDate, isbn);
-        System.out.printf("Новый ID: %s", newId);
+        Result<String> result = booksClient.create(name, author, publicDate, isbn);
+        if (result.isError()) {
+            System.out.println(result.getMessage());
+        } else {
+            System.out.printf("Новый ID: %s", result.getResult());
+        }
     }
 
     private static void update() {
@@ -128,8 +138,12 @@ public class Client {
         System.out.print("ISBN: ");
         String isbn = checkEmpty(in.nextLine());
 
-        String count = booksClient.update(id, name, author, publicDate, isbn);
-        System.out.printf("Обновлено: %s", count);
+        Result<String> result = booksClient.update(id, name, author, publicDate, isbn);
+        if (result.isError()) {
+            System.out.println(result.getMessage());
+        } else {
+            System.out.printf("Обновлено: %s", result.getResult());
+        }
     }
 
     private static void delete() {
@@ -139,8 +153,13 @@ public class Client {
         String idStr = checkEmpty(in.nextLine());
         if (idStr != null) {
             long id = Long.parseLong(idStr);
-            String count = booksClient.delete(id);
-            System.out.printf("Удалено: %s", count);
+
+            Result<String> result = booksClient.delete(id);
+            if (result.isError()) {
+                System.out.println(result.getMessage());
+            } else {
+                System.out.printf("Удалено: %s", result.getResult());
+            }
         } else {
             System.out.println("Ничего не введено");
         }
