@@ -1,7 +1,7 @@
 package ru.basa62.wst.lab6;
 
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
-import com.sun.jersey.api.core.ClassNamesResourceConfig;
+import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
@@ -30,7 +30,7 @@ public class App {
         DataSource dataSource = initDataSource();
         BooksResource.STATIC_DAO = new BooksDAO(dataSource);
 
-        ClassNamesResourceConfig resourceConfig = new ClassNamesResourceConfig(BooksResource.class);
+        PackagesResourceConfig resourceConfig = new PackagesResourceConfig(BooksResource.class.getPackage().getName());
 
         log.info("Starting");
         HttpServer httpServer = GrizzlyServerFactory.createHttpServer(appUrl, resourceConfig);
