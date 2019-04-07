@@ -34,6 +34,52 @@ public class BooksResourceClient {
         return response.getEntity(type);
     }
 
+    public String create(String name, String author, String  publicDate, String isbn) {
+        Client client = Client.create();
+        WebResource resource = client.resource(baseUrl);
+        resource = addParam(resource, "name", name);
+        resource = addParam(resource, "author", author);
+        resource = addParam(resource, "publicDate", publicDate);
+        resource = addParam(resource, "isbn", isbn);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
+        if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
+            throw new IllegalStateException("Request failed");
+        }
+        GenericType<String> type = new GenericType<String>() {
+        };
+        return response.getEntity(type);
+    }
+
+    public String update(Long id, String name, String author, String  publicDate, String isbn) {
+        Client client = Client.create();
+        WebResource resource = client.resource(baseUrl);
+        resource = addParam(resource, "id", id);
+        resource = addParam(resource, "name", name);
+        resource = addParam(resource, "author", author);
+        resource = addParam(resource, "publicDate", publicDate);
+        resource = addParam(resource, "isbn", isbn);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
+        if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
+            throw new IllegalStateException("Request failed");
+        }
+        GenericType<String> type = new GenericType<String>() {
+        };
+        return response.getEntity(type);
+    }
+
+    public String delete(Long id) {
+        Client client = Client.create();
+        WebResource resource = client.resource(baseUrl);
+        resource = addParam(resource, "id", id);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
+        if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
+            throw new IllegalStateException("Request failed");
+        }
+        GenericType<String> type = new GenericType<String>() {
+        };
+        return response.getEntity(type);
+    }
+
     private WebResource addParam(WebResource webResource, String name, Object param) {
         if (param != null) {
             return webResource.queryParam(name, param + "");
