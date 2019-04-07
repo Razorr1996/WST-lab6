@@ -6,10 +6,7 @@ import ru.basa62.wst.lab5.BooksEntity;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Date;
 import java.text.ParseException;
@@ -36,6 +33,14 @@ public class BooksResource {
                                     @QueryParam("author") String author,
                                     @QueryParam("publicDate") String publicDate, @QueryParam("isbn") String isbn) {
         return booksDAO.filter(id, name, author, getDate(publicDate), isbn);
+    }
+
+    @POST
+    @SneakyThrows
+    public String  create(@QueryParam("name") String name,
+                       @QueryParam("author") String author,
+                       @QueryParam("publicDate") String publicDate, @QueryParam("isbn") String isbn) {
+        return booksDAO.create(name, author, getDate(publicDate), isbn) + "";
     }
 
     private Date getDate(String string) throws ParseException {
