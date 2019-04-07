@@ -27,7 +27,6 @@ public class BooksResource {
     }
 
     @GET
-//    @Path("/filter")
     @SneakyThrows
     public List<BooksEntity> filter(@QueryParam("id") Long id, @QueryParam("name") String name,
                                     @QueryParam("author") String author,
@@ -37,10 +36,24 @@ public class BooksResource {
 
     @POST
     @SneakyThrows
-    public String  create(@QueryParam("name") String name,
-                       @QueryParam("author") String author,
-                       @QueryParam("publicDate") String publicDate, @QueryParam("isbn") String isbn) {
+    public String create(@QueryParam("name") String name,
+                         @QueryParam("author") String author,
+                         @QueryParam("publicDate") String publicDate, @QueryParam("isbn") String isbn) {
         return booksDAO.create(name, author, getDate(publicDate), isbn) + "";
+    }
+
+    @PUT
+    @SneakyThrows
+    public String update(@QueryParam("id") Long id, @QueryParam("name") String name,
+                         @QueryParam("author") String author,
+                         @QueryParam("publicDate") String publicDate, @QueryParam("isbn") String isbn) {
+        return booksDAO.update(id, name, author, getDate(publicDate), isbn) + "";
+    }
+
+    @DELETE
+    @SneakyThrows
+    public String delete(@QueryParam("id") Long id) {
+        return booksDAO.delete(id) + "";
     }
 
     private Date getDate(String string) throws ParseException {
