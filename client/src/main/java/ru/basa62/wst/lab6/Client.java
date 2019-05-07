@@ -12,6 +12,7 @@ public class Client {
     public static void main(String[] args) throws IOException {
         URL url = new URL(args[0]);
         booksClient = new BooksResourceClient(url.toString());
+        booksClient.setAuth("user", "pass");
 
         System.out.println("Добро пожаловать в библиотеку.");
         Scanner in = new Scanner(System.in);

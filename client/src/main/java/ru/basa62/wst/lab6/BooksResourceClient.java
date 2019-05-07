@@ -7,6 +7,7 @@ import com.sun.jersey.api.client.WebResource;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import sun.misc.BASE64Encoder;
 
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -17,6 +18,8 @@ public class BooksResourceClient {
     @NonNull
     private final String baseUrl;
 
+    private String authHeader = "";
+
     public Result<List<BooksEntity>> filter(Long id, String name, String author, String publicDate, String isbn) {
         Client client = Client.create();
         WebResource resource = client.resource(baseUrl);
@@ -25,7 +28,7 @@ public class BooksResourceClient {
         resource = addParam(resource, "author", author);
         resource = addParam(resource, "publicDate", publicDate);
         resource = addParam(resource, "isbn", isbn);
-        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).header("Authorization", authHeader).get(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             GenericType<String> type = new GenericType<String>() {
             };
@@ -43,7 +46,7 @@ public class BooksResourceClient {
         resource = addParam(resource, "author", author);
         resource = addParam(resource, "publicDate", publicDate);
         resource = addParam(resource, "isbn", isbn);
-        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).header("Authorization", authHeader).post(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             GenericType<String> type = new GenericType<String>() {
             };
@@ -62,7 +65,7 @@ public class BooksResourceClient {
         resource = addParam(resource, "author", author);
         resource = addParam(resource, "publicDate", publicDate);
         resource = addParam(resource, "isbn", isbn);
-        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).header("Authorization", authHeader).put(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             GenericType<String> type = new GenericType<String>() {
             };
@@ -77,7 +80,7 @@ public class BooksResourceClient {
         Client client = Client.create();
         WebResource resource = client.resource(baseUrl);
         resource = addParam(resource, "id", id);
-        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON_TYPE).header("Authorization", authHeader).delete(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             GenericType<String> type = new GenericType<String>() {
             };
@@ -93,5 +96,10 @@ public class BooksResourceClient {
             return webResource.queryParam(name, param + "");
         }
         return webResource;
+    }
+
+    public void setAuth(String user, String password) {
+        String authString = user + ":" + password;
+        authHeader = "Basic " + new BASE64Encoder().encode(authString.getBytes());
     }
 }
